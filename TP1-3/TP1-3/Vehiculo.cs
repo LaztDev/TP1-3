@@ -38,6 +38,11 @@ public class Vehiculo {
         _descuento = kilometraje > 20000 ? _precio * 0.2 : 0;
         _precio -= (int)_descuento;
     }
-
+    public void mostrarVehiculo() {
+        Console.WriteLine($"Marca: {_marca} | Modelo: {_modelo} | Año: {_anio}");
+        Console.WriteLine($"Kilometraje: {_kilometraje} | Patente: {_patente}");
+        Console.WriteLine($"Categoría: {_categoria} | Precio: {_precio} | Descuento aplicado: {_descuento}");
+        Console.WriteLine();
+    }
 }
 
