@@ -1,6 +1,6 @@
 ﻿namespace TP1_3;
 
-public class Vehiculo {
+public abstract class Vehiculo {
     private string _marca = string.Empty;
     private string _modelo = string.Empty;
     private string _patente = string.Empty;
@@ -103,15 +103,63 @@ public class Vehiculo {
         // Aplicar el descuento al precio
         _precio -= (int)Descuento; //uso de casting para convertir el Descuento a int y restarlo al precio
     }
-    public void mostrarVehiculo() {
+    public  void mostrarVehiculo() {
         Console.WriteLine($"Marca: {_marca} | Modelo: {_modelo} | Año: {_anio}");
         Console.WriteLine($"Kilometraje: {_kilometraje} | Patente: {_patente}");
         Console.WriteLine($"Categoría: {Categoria} | Precio: {_precio} | Descuento aplicado: {_descuento}");
+        DetalleEspecifico();
         Console.WriteLine();
     }
+    // Método abstracto para detalles específicos de cada tipo de vehículo
+    public abstract void DetalleEspecifico();
     // Enumeración para las categorías de vehículos
     public enum CategoriaVehiculo {
         Economico, Intermedio, Lujo, Deportivo
+    }
+}
+
+// Clase derivada para autos
+public class Auto : Vehiculo {
+    private int _cantidadPuertas;
+    public int CantidadPuertas {
+        get { return _cantidadPuertas; }
+        set {
+            if (value < 2) {
+                throw new ArgumentException("La cantidad de puertas debe ser mayor o igual a 2");
+            }
+            _cantidadPuertas = value;
+        }
+    }
+    public Auto(string marca, string modelo, string patente, int anio, int kilometraje, int precio, int cantidadPuertas)
+        : base(marca, modelo, patente, anio, kilometraje, precio) { 
+            
+        CantidadPuertas = cantidadPuertas;
+    }
+    //se sobreescribe el metodo abstracto del padre para mostrar la cantidad de puertas del auto
+    public override void DetalleEspecifico() {
+        Console.WriteLine($"Cantidad de puertas: {CantidadPuertas}");
+    }
+}
+
+// Clase derivada para motos
+public class Moto : Vehiculo {
+    private int _cilindrada;
+    public int Cilindrada {
+        get { return _cilindrada; }
+        set {
+            if (value <= 0) {
+                throw new ArgumentException("La cilindrada debe ser mayor a cero");
+            }
+            _cilindrada = value;
+        }
+    }
+    public Moto(string marca, string modelo, string patente, int anio, int kilometraje, int precio, int cilindrada)
+        : base(marca, modelo, patente, anio, kilometraje, precio) {
+        Cilindrada = cilindrada;
+    }
+    //se sobreescribe el metodo abstracto del padre para mostrar la cilindrada de la moto
+    public override void DetalleEspecifico() {
+        Console.WriteLine($"Cilindrada: {Cilindrada} cc");
     }
 }
 

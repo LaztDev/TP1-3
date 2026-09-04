@@ -45,7 +45,6 @@ public class Ventas {
         Cantidad = cantidad;
         PrecioFinal = vehiculo.Precio * cantidad;
     }
-
     public void mostrarVenta() {
         Console.WriteLine("=============== Detalles de la Venta ===============");
         Console.WriteLine($"Cliente: {NombreCliente}");
