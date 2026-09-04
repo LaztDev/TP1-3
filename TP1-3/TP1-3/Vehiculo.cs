@@ -7,42 +7,111 @@ public class Vehiculo {
     private int _anio;
     private int _kilometraje;
     private int _precio; 
-    private int _categoria;
     private double _descuento;
+    public CategoriaVehiculo Categoria { get; private set; }
+    public string Marca {
+        get { return _marca; } 
+        set {
+            if(string.IsNullOrWhiteSpace(value)) { 
+                throw new ArgumentException("La marca no puede estar vacía.");
+            }
+            _marca = value;
+        }
+    }
+    public string Modelo {
+        get { return _modelo; }
+        set {
+            if (string.IsNullOrWhiteSpace(value)) {
+                throw new ArgumentException("El modelo no puede estar vacío.");
+            }
+            _modelo = value;
+        }
+    }
+    public string Patente {
+        get { return _patente; }
+        set {
+            if (string.IsNullOrWhiteSpace(value)) {
+                throw new ArgumentException("La patente no puede estar vacía.");
+            }
+            _patente = value;
+        }
+    }
+    public int Anio {
+        get { return _anio; }
+        set {
+            if (value < 1900 || value > DateTime.Now.Year) {
+                throw new ArgumentException("El año debe estar entre 1900 y el año actual.");
+            }
+            _anio = value;
+        }
+    }
+    public int Kilometraje {
+        get { return _kilometraje; }
+        set {
+            if (value < 0) {
+                throw new ArgumentException("El kilometraje no puede ser negativo.");
+            }
+            _kilometraje = value;
+        }
+    }
+    public int Precio {
+        get { return _precio; }
+        set {
+            if (value < 0) {
+                throw new ArgumentException("El precio no puede ser negativo.");
+            }
+            _precio = value;
+        }
+    }
+    public double Descuento {
+        get { return _descuento; }
+        set {if (value < 0) {
+                throw new ArgumentException("El descuento no puede ser negativo.");
+            }
+            _descuento = value;
+        }
+    }
 
     public Vehiculo (string marca, string modelo, string patente, int anio, int kilometraje, int precio) { 
-        _marca = marca;
-        _modelo = modelo;
-        _patente = patente;
-        _anio = anio;
-        _kilometraje = kilometraje;
-        _precio = precio;
+        Marca = marca;
+        Modelo = modelo;
+        Patente = patente;
+        Anio = anio;
+        Kilometraje = kilometraje;
+        Precio = precio;
         asignarCat(precio);
         aplicarDescuento(kilometraje);   
     } 
     public void asignarCat(int precio) {
         if (precio < 30000) {
-            _categoria = 1;
+            Categoria = CategoriaVehiculo.Economico;
         } 
         else if (precio < 50000) {
-            _categoria = 2;
+            Categoria = CategoriaVehiculo.Intermedio;
         }
         else if (precio < 100000) {
-            _categoria = 3;
+            Categoria = CategoriaVehiculo.Lujo;
         }
         else {
-            _categoria = 4;
+            Categoria = CategoriaVehiculo.Deportivo;
         }
     }
+    // Método para aplicar descuento basado en el kilometraje
     public void aplicarDescuento( int kilometraje) {
-        _descuento = kilometraje > 20000 ? _precio * 0.2 : 0;
-        _precio -= (int)_descuento;
+        // asignacion del descuento mediante operador ternario
+        Descuento = kilometraje > 20000 ? _precio * 0.2 : 0;
+        // Aplicar el descuento al precio
+        _precio -= (int)Descuento; //uso de casting para convertir el Descuento a int y restarlo al precio
     }
     public void mostrarVehiculo() {
         Console.WriteLine($"Marca: {_marca} | Modelo: {_modelo} | Año: {_anio}");
         Console.WriteLine($"Kilometraje: {_kilometraje} | Patente: {_patente}");
-        Console.WriteLine($"Categoría: {_categoria} | Precio: {_precio} | Descuento aplicado: {_descuento}");
+        Console.WriteLine($"Categoría: {Categoria} | Precio: {_precio} | Descuento aplicado: {_descuento}");
         Console.WriteLine();
+    }
+    // Enumeración para las categorías de vehículos
+    public enum CategoriaVehiculo {
+        Economico, Intermedio, Lujo, Deportivo
     }
 }
 
